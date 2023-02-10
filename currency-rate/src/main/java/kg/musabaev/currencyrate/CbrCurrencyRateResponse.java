@@ -1,9 +1,7 @@
 package kg.musabaev.currencyrate;
 
 import jakarta.xml.bind.annotation.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Singular;
+import lombok.*;
 
 import java.util.List;
 
@@ -12,6 +10,8 @@ import java.util.List;
 @XmlRootElement(name = "ValCurs")
 @XmlAccessorType(XmlAccessType.FIELD)
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CbrCurrencyRateResponse {
 
 	@Singular
