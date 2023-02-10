@@ -2,11 +2,13 @@ package kg.musabaev.currencyrate;
 
 
 import jakarta.xml.bind.annotation.*;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @XmlRootElement(name = "Valute")
 @XmlAccessorType(XmlAccessType.FIELD)
+@Builder
 public class CurrencyRate {
 
 	@XmlAttribute(name = "ID")
