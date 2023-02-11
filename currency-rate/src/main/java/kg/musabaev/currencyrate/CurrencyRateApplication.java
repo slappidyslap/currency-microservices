@@ -1,6 +1,5 @@
 package kg.musabaev.currencyrate;
 
-import jakarta.xml.bind.JAXBException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -9,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 public class CurrencyRateApplication {
 
-	public static void main(String[] args) throws JAXBException {
+	public static void main(String[] args) {
 		SpringApplication.run(CurrencyRateApplication.class, args);
 	}
 }

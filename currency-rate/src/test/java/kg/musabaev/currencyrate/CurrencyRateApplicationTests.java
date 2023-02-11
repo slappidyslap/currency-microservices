@@ -19,13 +19,13 @@ class CurrencyRateApplicationTests {
 	CbrController cbrController;
 
 	@Mock
-	CbrCurrencyRateFeignClient currencyRateFeignClient;
+	CbrFeignClient cbrFeignClient;
 
 	@Test
 	void shouldFindRate() {
 		var currencyRates = getCbrCurrencyRateResponse();
 
-		when(currencyRateFeignClient.getAllCbrCurrencyRate()).thenReturn(ResponseEntity.ok(currencyRates));
+		when(cbrFeignClient.getAllCbrCurrencyRate()).thenReturn(ResponseEntity.ok(currencyRates));
 
 		ResponseEntity<CurrencyRate> kgsRate = cbrController.getCurrencyRate("KGS");
 
@@ -37,14 +37,14 @@ class CurrencyRateApplicationTests {
 	void shouldNotFindRate() {
 		var currencyRates = getCbrCurrencyRateResponse();
 
-		when(currencyRateFeignClient.getAllCbrCurrencyRate()).thenReturn(ResponseEntity.ok(currencyRates));
+		when(cbrFeignClient.getAllCbrCurrencyRate()).thenReturn(ResponseEntity.ok(currencyRates));
 
 		assertThatExceptionOfType(ResponseStatusException.class).isThrownBy(() ->
 				cbrController.getCurrencyRate("KZT"));
 	}
 
-	private CbrCurrencyRateResponse getCbrCurrencyRateResponse() {
-		return CbrCurrencyRateResponse.builder()
+	private CbrResponse getCbrCurrencyRateResponse() {
+		return CbrResponse.builder()
 				.currencyRate(CurrencyRate.builder().charCode("KGS").value(1.124).build())
 				.currencyRate(CurrencyRate.builder().charCode("EUR").value(83.421).build())
 				.build();

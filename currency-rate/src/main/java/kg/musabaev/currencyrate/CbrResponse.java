@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CbrCurrencyRateResponse {
+public class CbrResponse {
 
 	@Singular
 	@XmlElement(name = "Valute")

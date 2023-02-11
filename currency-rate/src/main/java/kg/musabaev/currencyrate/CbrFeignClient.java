@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @FeignClient(url = "https://www.cbr-xml-daily.ru", name = "cbr-currency-rate")
-public interface CbrCurrencyRateFeignClient {
+public interface CbrFeignClient {
 
 	@GetMapping(path = "/daily_utf8.xml", consumes = MediaType.APPLICATION_XML_VALUE)
 //	@Cacheable("cbr-currency-rate")
-	ResponseEntity<CbrCurrencyRateResponse> getAllCbrCurrencyRate();
+	ResponseEntity<CbrResponse> getAllCbrCurrencyRate();
 }
