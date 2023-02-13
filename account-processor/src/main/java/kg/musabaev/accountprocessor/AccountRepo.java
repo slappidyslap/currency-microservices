@@ -1,4 +1,4 @@
-package kg.musabaev.exchangeprocessor;
+package kg.musabaev.accountprocessor;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;

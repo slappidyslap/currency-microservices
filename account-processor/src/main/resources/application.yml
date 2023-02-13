@@ -1,13 +1,10 @@
 spring:
   application:
-    name: exchange-processor
+    name: account-processor
 
   datasource:
     url: jdbc:h2:file:./exchange-processor-dev;AUTO_SERVER=TRUE;
     password: sa
-  h2:
-    console:
-      enabled: true
   jpa:
     hibernate:
       ddl-auto: validate

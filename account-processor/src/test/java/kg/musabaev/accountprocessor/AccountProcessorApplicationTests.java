@@ -1,4 +1,4 @@
-package kg.musabaev.exchangeprocessor;
+package kg.musabaev.accountprocessor;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-class ExchangeProcessorApplicationTests {
+class AccountProcessorApplicationTests {
 
 	@InjectMocks
 	AccountService accountService;

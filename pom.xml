@@ -17,7 +17,7 @@
 
     <modules>
         <module>currency-rate</module>
-        <module>exchange-processor</module>
+        <module>account-processor</module>
         <module>eureka-server</module>
         <module>gateway</module>
     </modules>

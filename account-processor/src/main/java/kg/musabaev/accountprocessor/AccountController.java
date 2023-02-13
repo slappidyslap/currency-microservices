@@ -1,4 +1,4 @@
-package kg.musabaev.exchangeprocessor;
+package kg.musabaev.accountprocessor;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;

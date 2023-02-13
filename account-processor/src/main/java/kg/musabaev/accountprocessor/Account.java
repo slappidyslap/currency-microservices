@@ -1,4 +1,4 @@
-package kg.musabaev.exchangeprocessor;
+package kg.musabaev.accountprocessor;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;

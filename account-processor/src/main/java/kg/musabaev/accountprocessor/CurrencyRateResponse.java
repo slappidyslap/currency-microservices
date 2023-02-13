@@ -1,4 +1,4 @@
-package kg.musabaev.exchangeprocessor;
+package kg.musabaev.accountprocessor;
 
 public record CurrencyRateResponse(
 		String id,

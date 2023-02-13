@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>kg.musabaev</groupId>
-    <artifactId>exchange-processer</artifactId>
+    <artifactId>account-processer</artifactId>
     <version>1.0</version>
-    <name>exchange-processor</name>
-    <description>exchange-processor</description>
+    <name>account-processor</name>
+    <description>account-processor</description>
     <properties>
         <java.version>17</java.version>
         <spring-cloud.version>2022.0.1</spring-cloud.version>
