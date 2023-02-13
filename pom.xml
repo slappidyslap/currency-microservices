@@ -20,6 +20,7 @@
         <module>account-processor</module>
         <module>eureka-server</module>
         <module>gateway</module>
+        <module>auth-server</module>
     </modules>
 
 </project>
