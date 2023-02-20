@@ -11,3 +11,7 @@ http://host/.well-known/openid-configuration
 https://docs.spring.io/spring-authorization-server/docs/current/reference/html/getting-started.html#developing-your-first-application
 
 https://docs.spring.io/spring-authorization-server/docs/current/reference/html/guides/how-to-userinfo.html
+
+https://stackoverflow.com/questions/49290819/why-are-refresh-tokens-considered-insecure-for-an-spa
+
+https://habr.com/ru/post/688680/

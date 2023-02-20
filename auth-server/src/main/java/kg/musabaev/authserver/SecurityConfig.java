@@ -83,15 +83,14 @@ public class SecurityConfig {
 		RegisteredClient client = RegisteredClient
 				.withId(UUID.randomUUID().toString())
 				.clientId("oauth-client")
-				.clientSecret("2")
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//				.clientSecret("2")
+				.clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
 				.scope(OidcScopes.OPENID)
 				.scope(OidcScopes.PROFILE)
 				.scope("account.read")
 				.scope("account.write")
-				.redirectUri("https://oauthdebugger.com/debug")
 				.redirectUri("https://oidcdebugger.com/debug")
 				.build();
 
@@ -117,6 +116,7 @@ public class SecurityConfig {
 	public ClientSettings clientSettings() {
 		return ClientSettings.builder()
 				.requireAuthorizationConsent(true)
+				.requireProofKey(true)
 				.build();
 	}
 
