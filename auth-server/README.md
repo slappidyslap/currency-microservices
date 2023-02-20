@@ -6,6 +6,8 @@ https://oidcdebugger.com/
 
 https://www.youtube.com/watch?v=YqGXbrVGUaU&list=PL1Nml43UBm6dOj4UuH-7a9e3wO6eL2SCi
 
-http://host/.well-known/oauth-authorization-server
+http://host/.well-known/openid-configuration
 
 https://docs.spring.io/spring-authorization-server/docs/current/reference/html/getting-started.html#developing-your-first-application
+
+https://docs.spring.io/spring-authorization-server/docs/current/reference/html/guides/how-to-userinfo.html
