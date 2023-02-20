@@ -86,7 +86,7 @@ public class SecurityConfig {
 //				.clientSecret("2")
 				.clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+//				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
 				.scope(OidcScopes.OPENID)
 				.scope(OidcScopes.PROFILE)
 				.scope("account.read")
@@ -108,7 +108,7 @@ public class SecurityConfig {
 	public TokenSettings tokenSettings() {
 		return TokenSettings.builder()
 				.accessTokenTimeToLive(Duration.ofMinutes(10))
-				.refreshTokenTimeToLive(Duration.ofMinutes(2))
+//				.refreshTokenTimeToLive(Duration.ofMinutes(2))
 				.build();
 	}
 
