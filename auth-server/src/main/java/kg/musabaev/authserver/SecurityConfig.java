@@ -45,8 +45,8 @@ import java.util.UUID;
 @Configuration(proxyBeanMethods = false)
 public class SecurityConfig {
 
-	@Value("${app.issuer-url}")
-	private String issuerUrl;
+	@Value("${app.issuer-uri}")
+	private String issuerUri;
 
 	@Bean
 	@Order(1)
@@ -92,6 +92,9 @@ public class SecurityConfig {
 				.scope("account.read")
 				.scope("account.write")
 				.redirectUri("https://oidcdebugger.com/debug")
+				.tokenSettings(TokenSettings.builder()
+						.accessTokenTimeToLive(Duration.ofHours(1))
+						.build())
 				.build();
 
 		return new InMemoryRegisteredClientRepository(client);
@@ -100,15 +103,7 @@ public class SecurityConfig {
 	@Bean
 	public AuthorizationServerSettings authorizationServerSettings() {
 		return AuthorizationServerSettings.builder()
-				.issuer(issuerUrl)
-				.build();
-	}
-
-	@Bean
-	public TokenSettings tokenSettings() {
-		return TokenSettings.builder()
-				.accessTokenTimeToLive(Duration.ofMinutes(10))
-//				.refreshTokenTimeToLive(Duration.ofMinutes(2))
+				.issuer(issuerUri)
 				.build();
 	}
 

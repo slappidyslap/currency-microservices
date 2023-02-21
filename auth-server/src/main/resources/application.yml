@@ -17,4 +17,4 @@ server:
   port: 9000
 
 app:
-  issuer-url: ${ISSUER_URL:http://auth-server:${server.port}}
+  issuer-uri: ${ISSUER_URI:http://auth-server:${server.port}}
