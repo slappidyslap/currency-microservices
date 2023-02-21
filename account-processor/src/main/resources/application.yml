@@ -18,12 +18,19 @@ spring:
         jwt:
           issuer-uri: ${ISSUER_URI:http://auth-server:9000}
 
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+
 logging:
   level:
     org:
       springframework:
         security:
           oauth2: trace
+    web: debug
 
 eureka:
   client:

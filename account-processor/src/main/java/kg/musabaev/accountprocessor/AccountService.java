@@ -3,6 +3,7 @@ package kg.musabaev.accountprocessor;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ public class AccountService {
 
 	AccountRepo accountRepo;
 	CurrencyRateFeignClient currencyRateFeignClient;
+	RabbitTemplate rabbitTemplate;
 
 	@Transactional
 	public Account create(long ownerId, String name) {
@@ -27,6 +29,8 @@ public class AccountService {
 
 		if (isInvalidAccountName(name))
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+		rabbitTemplate.convertAndSend("q.account", new AccountCreateEvent(ownerId, name));
 
 		return accountRepo.save(Account.builder()
 				.ownerId(ownerId)
@@ -49,6 +53,8 @@ public class AccountService {
 				.map(ResponseEntity::getBody)
 				.map(rate -> money / ( rate.value() / rate.nominal() ) )
 				.orElseThrow(() -> {throw new ResponseStatusException(HttpStatus.NOT_FOUND); });
+
+		rabbitTemplate.convertAndSend("q.account", new AccountMoneyPutEvent(ownerId, accountId, money));
 
 		accountRepo.updateTotalMoneyByOwnerIdAndAccountName(accountId, actualMoney);
 	}
