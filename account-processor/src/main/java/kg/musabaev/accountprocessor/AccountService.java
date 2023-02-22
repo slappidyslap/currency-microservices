@@ -30,7 +30,9 @@ public class AccountService {
 		if (isInvalidAccountName(name))
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-		rabbitTemplate.convertAndSend("q.account", new AccountCreateEvent(ownerId, name));
+		rabbitTemplate.convertAndSend(
+				RabbitMqConfig.QUEUE_ACCOUNT_CREATE_EVENT,
+				new AccountCreateEvent(ownerId, name));
 
 		return accountRepo.save(Account.builder()
 				.ownerId(ownerId)
@@ -54,7 +56,9 @@ public class AccountService {
 				.map(rate -> money / ( rate.value() / rate.nominal() ) )
 				.orElseThrow(() -> {throw new ResponseStatusException(HttpStatus.NOT_FOUND); });
 
-		rabbitTemplate.convertAndSend("q.account", new AccountMoneyPutEvent(ownerId, accountId, money));
+		rabbitTemplate.convertAndSend(
+				RabbitMqConfig.QUEUE_ACCOUNT_MONEY_PUT_EVENT,
+				new AccountMoneyPutEvent(ownerId, accountId, money));
 
 		accountRepo.updateTotalMoneyByOwnerIdAndAccountName(accountId, actualMoney);
 	}
