@@ -1,7 +1,8 @@
 spring:
   datasource:
-    url: jdbc:h2:file:./account-processor-dev;AUTO_SERVER=TRUE;
-    password: sa
+    url: jdbc:postgresql://${POSTGRESQL_HOST:localhost}:${POSTGRESQL_POST:5432}/${POSTGRESQL_DATABASE_NAME:currency_microservice}
+    password: ${POSTGRESQL_PASSWORD}
+    username: ${POSTGRESQL_USERNAME}
   jpa:
     hibernate:
       ddl-auto: validate
