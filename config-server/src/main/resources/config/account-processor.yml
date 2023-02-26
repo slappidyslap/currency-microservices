@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://${POSTGRESQL_HOST:localhost}:${POSTGRESQL_POST:5432}/${POSTGRESQL_DATABASE_NAME:currency_microservice}
+    url: jdbc:postgresql://${POSTGRESQL_HOST:localhost}:${POSTGRESQL_PORT:5432}/${POSTGRESQL_DATABASE_NAME:currency_microservice}
     password: ${POSTGRESQL_PASSWORD}
     username: ${POSTGRESQL_USERNAME}
   jpa:
