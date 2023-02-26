@@ -21,6 +21,8 @@
         <module>eureka-server</module>
         <module>gateway</module>
         <module>auth-server</module>
+        <module>config-server</module>
+        <module>account-history</module>
     </modules>
 
 </project>
