@@ -1,0 +1,11 @@
+eureka:
+  client:
+    service-url:
+      default-zone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE:http://localhost:8761/eureka}
+
+app:
+  cbr:
+    url: https://www.cbr-xml-daily.ru
+
+server:
+  port: 0

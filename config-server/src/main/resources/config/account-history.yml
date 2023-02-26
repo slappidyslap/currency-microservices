@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:h2:file:./account-history-dev;AUTO_SERVER=TRUE;
+    password: sa
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: ${ISSUER_URI:http://auth-server:9000}
+
+rabbitmq:
+  host: ${RABBITMQ_HOST:localhost}
+  port: ${RABBITMQ_PORT:5672}
+  username: ${RABBITMQ_USERNAME:guest}
+  password: ${RABBITMQ_PASSWORD:guest}
+
+server:
+  port: 0

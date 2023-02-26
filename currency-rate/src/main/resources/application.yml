@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: currency-rate
+
+  config:
+    import: configserver:${CONFIG_SERVER_URL:http://localhost:8888}

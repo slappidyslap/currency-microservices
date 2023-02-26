@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-by-entity-account
+      author: Eldiyar
+      changes:
+        - createTable:
+            tableName: accounts
+            remarks: Счета пользователей
+            columns:
+              - column:
+                  name: account_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: accounts_account_id_pk
+              - column:
+                  name: name
+                  type: varchar(5)
+                  remarks: Буквенный код валюты
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_money
+                  type: double
+                  remarks: Деньги в счете
+                  constraints:
+                    nullable: false
+              - column:
+                  name: owner_id
+                  type: bigint
+                  remarks: Ссылка на id обладателя счета
+                  constraints:
+                    nullable: false
