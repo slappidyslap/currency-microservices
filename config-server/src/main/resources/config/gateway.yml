@@ -1,14 +1,14 @@
-
-cloud:
-  gateway:
-    discovery:
-      locator:
-        lower-case-service-id: true
-        enabled: true
-#      httpclient:
-#        wiretap: true
-#      httpserver:
-#        wiretap: true
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          lower-case-service-id: true
+          enabled: true
+#        httpclient:
+#          wiretap: true
+#        httpserver:
+#          wiretap: true
 
 logging:
   level:
