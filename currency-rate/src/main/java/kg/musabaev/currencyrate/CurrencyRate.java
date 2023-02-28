@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.text.NumberFormat;
+import java.util.Locale;
 
 @Data
 @XmlRootElement(name = "Valute")
@@ -42,7 +43,7 @@ public class CurrencyRate {
 
 		@Override
 		public Double unmarshal(String v) throws Exception {
-			return (Double) NumberFormat.getInstance().parse(v);
+			return (Double) NumberFormat.getInstance(Locale.forLanguageTag("ru")).parse(v);
 		}
 
 		@Override
