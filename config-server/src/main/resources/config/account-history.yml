@@ -8,22 +8,17 @@ spring:
       ddl-auto: update
     show-sql: true
 
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+
 #  security:
 #    oauth2:
 #      resourceserver:
 #        jwt:
-#          issuer-uri: ${ISSUER_URI:http://auth-server:9000}
-
-eureka:
-  client:
-    service-url:
-      default-zone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE:http://localhost:8761/eureka}
-
-rabbitmq:
-  host: ${RABBITMQ_HOST:localhost}
-  port: ${RABBITMQ_PORT:5672}
-  username: ${RABBITMQ_USERNAME:guest}
-  password: ${RABBITMQ_PASSWORD:guest}
+#          issuer-uri: ${AUTH_SERVER_URL:http://auth-server:9000}
 
 server:
   port: 0

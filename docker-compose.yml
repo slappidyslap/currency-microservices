@@ -1,0 +1,105 @@
+version: '3'
+
+services:
+  postgresql:
+    image: postgres:14.6-alpine
+    container_name: postgresql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD:-1}
+      POSTGRES_DB: ${POSTGRESQL_DATABASE_NAME:-currency_microservice}
+    ports:
+      - "5433:5432"
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  eureka-server:
+    build: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+  config-server:
+    build: ./config-server
+    container_name: config-server
+    environment:
+      EUREKA_SERVER_URL: http://eureka-server:8761/eureka
+      AUTH_SERVER_URL: http://auth-server:9000
+      ACCESS_TOKEN_TTL_MS: 1000 * 60 * 30
+    ports:
+      - "8888:8888"
+    depends_on:
+      - eureka-server
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "8765:8765"
+    depends_on:
+      - eureka-server
+      - config-server
+    environment:
+      CONFIG_SERVER_URL: http://config-server:8888
+      EUREKA_SERVER_URL: http://eureka-server:8761/eureka
+  auth-server:
+    build: ./auth-server
+    container_name: auth-server
+    ports:
+      - "9000:9000"
+    depends_on:
+      - eureka-server
+      - config-server
+    environment:
+      CONFIG_SERVER_URL: http://config-server:8888
+      EUREKA_SERVER_URL: http://eureka-server:8761/eureka
+  currency-rate:
+    build: ./currency-rate
+    container_name: currency-rate
+    depends_on:
+      - eureka-server
+      - config-server
+      - gateway
+    environment:
+      CONFIG_SERVER_URL: http://config-server:8888
+      EUREKA_SERVER_URL: http://eureka-server:8761/eureka
+  account-processor:
+    build: ./account-processor
+    container_name: account-processor
+    depends_on:
+      - eureka-server
+      - config-server
+      - gateway
+      - rabbitmq
+      - postgresql
+      - currency-rate
+    environment:
+      CONFIG_SERVER_URL: http://config-server:8888
+      EUREKA_SERVER_URL: http://eureka-server:8761/eureka
+      POSTGRESQL_HOST: postgresql
+      POSTGRESQL_PORT: 5432
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: ${POSTGRESQL_PASSWORD:-1}
+      POSTGRESQL_DATABASE_NAME: ${POSTGRESQL_DATABASE_NAME:-currency_microservice}
+      RABBITMQ_HOST: rabbitmq
+  account-history:
+    build: ./account-history
+    container_name: account-history
+    depends_on:
+      - eureka-server
+      - config-server
+      - gateway
+      - rabbitmq
+      - postgresql
+      - account-processor
+    environment:
+      CONFIG_SERVER_URL: http://config-server:8888
+      EUREKA_SERVER_URL: http://eureka-server:8761/eureka
+      POSTGRESQL_HOST: postgresql
+      POSTGRESQL_PORT: 5432
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: ${POSTGRESQL_PASSWORD:-1}
+      POSTGRESQL_DATABASE_NAME: ${POSTGRESQL_DATABASE_NAME:-currency_microservice}
+      RABBITMQ_HOST: rabbitmq
