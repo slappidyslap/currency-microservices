@@ -17,11 +17,47 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+  elasticsearch:
+    image: elasticsearch:7.17.9
+    container_name: elasticsearch
+    restart: always
+    ports:
+      - "9200:9200"
+    environment:
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      discovery.type: single-node
+#    volumes:
+#      - ./docker-volumes/elastic-data:/usr/share/elasticsearch/data
+  logstash:
+    image: logstash:7.17.9
+    container_name: logstash
+    restart: always
+    ports:
+      - "5044:5044"
+      - "5000:5000"
+      - "9600:9600"
+    volumes:
+      - ./config/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./config/logstash/pipeline/:/usr/share/logstash/pipeline/:ro
+    depends_on:
+      - elasticsearch
+  kibana:
+    image: kibana:7.17.9
+    container_name: kibana
+    restart: always
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
   eureka-server:
     build: ./eureka-server
     container_name: eureka-server
     ports:
       - "8761:8761"
+    depends_on:
+      - elasticsearch
   config-server:
     build: ./config-server
     container_name: config-server
@@ -32,6 +68,7 @@ services:
     ports:
       - "8888:8888"
     depends_on:
+      - elasticsearch
       - eureka-server
   gateway:
     build: ./gateway
@@ -39,6 +76,7 @@ services:
     ports:
       - "8765:8765"
     depends_on:
+      - elasticsearch
       - eureka-server
       - config-server
     environment:
@@ -50,6 +88,7 @@ services:
     ports:
       - "9000:9000"
     depends_on:
+      - elasticsearch
       - eureka-server
       - config-server
     environment:
@@ -59,6 +98,7 @@ services:
     build: ./currency-rate
     container_name: currency-rate
     depends_on:
+      - elasticsearch
       - eureka-server
       - config-server
       - gateway
@@ -69,6 +109,7 @@ services:
     build: ./account-processor
     container_name: account-processor
     depends_on:
+      - elasticsearch
       - eureka-server
       - config-server
       - gateway
@@ -88,6 +129,7 @@ services:
     build: ./account-history
     container_name: account-history
     depends_on:
+      - elasticsearch
       - eureka-server
       - config-server
       - gateway
