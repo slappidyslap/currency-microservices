@@ -51,6 +51,26 @@ services:
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
     depends_on:
       - elasticsearch
+  jenkins:
+    image: jenkins/jenkins:lts-jdk11
+    container_name: jenkins
+    ports:
+      - "8880:8080"
+      - "50000:50000"
+    volumes:
+      - "../../docker-volumes/jenkins:/var/jenkins_home"
+#      - ".:/var/currency-microservices:ro"
+#    environment:
+#      JAVA_OPTS: -Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true
+  sonarqube:
+    image: sonarqube:9-community
+    container_name: sonarqube
+    ports:
+      - "9900:9000"
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: true
+    depends_on:
+      - jenkins
   eureka-server:
     build: ./eureka-server
     container_name: eureka-server
