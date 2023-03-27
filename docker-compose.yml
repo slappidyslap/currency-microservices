@@ -52,7 +52,7 @@ services:
     depends_on:
       - elasticsearch
   jenkins:
-    image: jenkins/jenkins:lts-jdk11
+    image: jenkins/jenkins:lts-jdk17
     container_name: jenkins
     ports:
       - "8880:8080"
