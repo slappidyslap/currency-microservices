@@ -1,5 +1,9 @@
 pipeline {
 	agent any
+	tools {
+		maven 'Maven 3.8.6'
+	}
+
 	stages {
 		stage('Test') {
 			steps {
@@ -9,9 +13,8 @@ pipeline {
 		stage('SonarQube Analysis') {
 			steps {
 				script {
-					def mvn = tool 'Default Maven';
 					withSonarQubeEnv() {
-							sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=currency-microservices"
+							sh "mvn clean verify sonar:sonar -Dsonar.projectKey=currency-microservices"
 					}
 				}
 			}
