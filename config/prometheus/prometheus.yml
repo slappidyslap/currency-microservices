@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 10s
+
+scrape_configs:
+  - job_name: 'currency-rate'
+    metrics_path: '/currency-rate/actuator/prometheus'
+    static_configs:
+      - targets: ['gateway:8765']
+  - job_name: 'account-history'
+    metrics_path: '/account-history/actuator/prometheus'
+    static_configs:
+      - targets: ['gateway:8765']
+  - job_name: 'account-processor'
+    metrics_path: '/account-processor/actuator/prometheus'
+    static_configs:
+      - targets: ['gateway:8765']

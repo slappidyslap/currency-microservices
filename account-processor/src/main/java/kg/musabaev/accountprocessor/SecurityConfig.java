@@ -16,9 +16,10 @@ public class SecurityConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
 				.authorizeHttpRequests(matchers -> matchers
-						.requestMatchers(HttpMethod.POST, "/**").hasAuthority("SCOPE_account.write")
-						.requestMatchers(HttpMethod.PUT, "/**").hasAuthority("SCOPE_account.write")
-						.requestMatchers(HttpMethod.GET, "/**").hasAuthority("SCOPE_account.read"))
+						.requestMatchers("/actuator/**").permitAll()
+						.requestMatchers(HttpMethod.POST, "/users/*/accounts").hasAuthority("SCOPE_account.write")
+						.requestMatchers(HttpMethod.PUT, "/users/*/accounts").hasAuthority("SCOPE_account.write")
+						.requestMatchers(HttpMethod.GET, "/users/*/accounts").hasAuthority("SCOPE_account.read"))
 				.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
 				.build();
 	}

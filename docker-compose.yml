@@ -68,9 +68,23 @@ services:
     ports:
       - "9900:9000"
     environment:
-      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: true
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: 'true'
     depends_on:
       - jenkins
+  prometheus:
+    image: prom/prometheus:v2.43.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - "./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+  grafana:
+    image: grafana/grafana:9.2.15
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
   eureka-server:
     build: ./eureka-server
     container_name: eureka-server
@@ -122,6 +136,7 @@ services:
       - eureka-server
       - config-server
       - gateway
+      - prometheus
     environment:
       CONFIG_SERVER_URL: http://config-server:8888
       EUREKA_SERVER_URL: http://eureka-server:8761/eureka
@@ -136,6 +151,7 @@ services:
       - rabbitmq
       - postgresql
       - currency-rate
+      - prometheus
     environment:
       CONFIG_SERVER_URL: http://config-server:8888
       EUREKA_SERVER_URL: http://eureka-server:8761/eureka
@@ -156,6 +172,7 @@ services:
       - rabbitmq
       - postgresql
       - account-processor
+      - prometheus
     environment:
       CONFIG_SERVER_URL: http://config-server:8888
       EUREKA_SERVER_URL: http://eureka-server:8761/eureka

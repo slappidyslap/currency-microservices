@@ -18,3 +18,9 @@ Credentials:
 https://github.com/slappidyslap/currency-microservices/blob/80a9d8085d0a4b5830ae6d40a8b0a409df6eac5f/auth-server/src/main/java/kg/musabaev/authserver/SecurityConfig.java#L83-L102
 > Клиент `oauth-client` получает токен через [PKCE](https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow-with-proof-key-for-code-exchange-pkce) 
 
+## Полезное
+https://docs.sonarqube.org/9.9/analyzing-source-code/ci-integration/jenkins-integration/
+
+https://www.rabbitmq.com/reliability.html
+
+https://habr.com/ru/company/flant/blog/460367/
