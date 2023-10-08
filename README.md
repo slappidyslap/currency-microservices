@@ -6,6 +6,18 @@
 * account history
 микросервис хранящий историю операций пользователя. События приходят через RabbitMQ.
 
+## Использованные технологии
+* Spring Boot
+* Spring Cloud
+* PostgreSQL
+* RabbitMQ
+* Prometheus, Grafana
+* ELK Stack
+* Jenkins
+* SonarQube
+* Docker
+* Maven
+
 ## Запуск
 Убедитесь в валидности `docker-compose.yml` вызвав команду `docker compose convert`
 Запустив через команду `docker compose up --build -d`, проверяйте, чтобы сервисы не упали, не дождавшись зависимый сервис.
