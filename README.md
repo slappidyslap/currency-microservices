@@ -6,7 +6,7 @@
 
 Система состоит из следующих микросервисов и инфраструктурных компонентов:
 
-![alt text](./media/image.png)
+<img width="1288" height="607" alt="image" src="https://github.com/user-attachments/assets/02d9d700-42a5-4c00-baf7-4eb1294dd458" />
 
 ### Бизнесовые микросервисы
 
