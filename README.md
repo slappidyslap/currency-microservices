@@ -1,38 +1,104 @@
-## Микросервисы
-* currency rate 
-микросервис - просто надстройка над API Центрального банка России. У него существует единственный эндпоинт `/rates/{charCode}`, который возвращает в формате JSON данные об валюте по заданному буквенному коду валюты.
-* account processor 
-микросервис отвечающий за обслуживание счётов пользователей. Для использования требуется Access Token, полученный у микросервиса `auth-server`.
-* account history
-микросервис хранящий историю операций пользователя. События приходят через RabbitMQ.
+# Система управления банковскими счетами
 
-## Использованные технологии
-* Spring Boot
-* Spring Cloud
-* PostgreSQL
-* RabbitMQ
-* Prometheus, Grafana
-* ELK Stack
-* Jenkins
-* SonarQube
-* Docker
-* Maven
+Это проект, демонстрирующий микросервисную архитектуру для управления банковскими счетами и операциями с валютами. Система построена на стеке технологий Spring, включает в себя централизованную аутентификацию, асинхронный обмен сообщениями и полный набор инструментов для мониторинга и логирования.
 
-## Запуск
-Убедитесь в валидности `docker-compose.yml` вызвав команду `docker compose convert`
-Запустив через команду `docker compose up --build -d`, проверяйте, чтобы сервисы не упали, не дождавшись зависимый сервис.
-> Сверяйтесь с помощью опции `depends_on` в `docker-compose.yml`
+## Архитектура
 
-## Authorization server
-Access Token легко можно получить с помощью [oidcdebugger](https://oidcdebugger.com/) или через Postman.
+Система состоит из следующих микросервисов и инфраструктурных компонентов:
 
-Credentials: 
-https://github.com/slappidyslap/currency-microservices/blob/80a9d8085d0a4b5830ae6d40a8b0a409df6eac5f/auth-server/src/main/java/kg/musabaev/authserver/SecurityConfig.java#L83-L102
-> Клиент `oauth-client` получает токен через [PKCE](https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow-with-proof-key-for-code-exchange-pkce) 
+![alt text](./media/image.png)
 
-## Полезное
-https://docs.sonarqube.org/9.9/analyzing-source-code/ci-integration/jenkins-integration/
+### Бизнесовые микросервисы
 
-https://www.rabbitmq.com/reliability.html
+#### Account Processor
 
-https://habr.com/ru/company/flant/blog/460367/
+Этот микросервис отвечает за создание и управление банковскими счетами пользователей. Хранит информацию о счетах и балансе пользователей в БД. Так же взаимодействует с другими сервисами через Feign клиент.
+
+Он также выступает как Resource Server, доступ которому можно получить с помощью JWT токенов, выданных централизованным Authorization Server (модуль `auth-server`).
+
+#### Currency Rate
+
+Этот микросервис отвечает за получение и обновление актуальных курсов валют из **Центрального Банка РФ**.
+
+Он выступает в роли **адаптера**, преобразуя XML ответ ЦБ РФ в удобный JSON формат, пригодный для других микросервисов.
+
+#### Account History
+
+Сервис, который слушает события из RabbitMQ и сохраняет историю операций связанный с аккаунтом в свою базу данных (например, создание счета или пополнение).
+
+### Инфраструктурные компоненты
+- **Eureka Server**: Сервер для регистрации и обнаружения всех микросервисов в системе.
+- **Config Server**: Централизованное хранилище конфигураций для всех сервисов.
+- **API Gateway**: Единая точка входа для всех клиентских запросов. Маршрутизирует вызовы к соответствующим микросервисам.
+- **Auth Server**: Сервер авторизации на базе **Spring Authorization Server**, отвечающий за выдачу и проверку JWT токенов.
+- **PostgreSQL**: Реляционная база данных для хранения данных счетов и истории операций.
+- **RabbitMQ**: Брокер сообщений для асинхронного взаимодействия между сервисами.
+- **ELK Stack (Elasticsearch, Logstash, Kibana)**: Система для сбора, хранения и анализа логов со всех сервисов.
+- **Prometheus & Grafana**: Система для сбора метрик производительности и их визуализации.
+- **Jenkins & SonarQube**: Инструменты для непрерывной интеграции (CI) и анализа качества кода.
+
+## Технологический стек
+
+| Категория              | Технология                                                                                             |
+| ---------------------- | ------------------------------------------------------------------------------------------------------ |
+| **Платформа**          | Java 17, Maven                                                                                         |
+| **Фреймворки**         | Spring Boot 3.0.2, Spring Cloud 2022.0.1                                                               |
+| **Микросервисы**       | Spring Cloud Gateway, Eureka, Spring Cloud Config, OpenFeign                                           |
+| **Базы данных**        | PostgreSQL, Liquibase                                                                                  |
+| **Аутентификация**     | Spring Security, Spring Authorization Server (OAuth2)                                                  |
+| **Обмен сообщениями**  | RabbitMQ, Spring AMQP                                                                                  |
+| **Мониторинг**         | Prometheus, Grafana, Spring Boot Actuator                                                              |
+| **Логирование**        | ELK Stack (Elasticsearch, Logstash, Kibana), Logback                                                   |
+| **CI/CD и Качество**   | Docker, Docker Compose, Jenkins, SonarQube                                                             |
+| **Утилиты**            | Lombok, JAXB                                                                                           |
+
+## Деплой
+
+Система была развернута на виртуальной машине в Google Cloud Platform (GCP) с использованием бесплатного уровня Compute Engine (e2-micro).
+
+Деплой автоматизирован через Jenkins:
+
+* Jenkins собирал артефакты и копировал их вместе с docker-compose.yml на удалённый сервер в GCP
+
+* После копирования выполнялась команда перезапуска сервисов через docker compose, обеспечивая обновление контейнеров
+
+## Запуск проекта
+
+Для запуска проекта используется Docker Compose, который поднимает все сервисы и необходимую инфраструктуру.
+
+1.  **Склонируйте репозиторий:**
+    ```bash
+    git clone https://github.com/slappidyslap/currency-microservices.git
+    cd currency-microservices
+    ```
+
+2.  **Соберите проекты:**
+    Для сборки всех модулей выполните команду в корневом каталоге проекта:
+    ```bash
+    ./mvnw clean package
+    ```
+3.  **Запустите Docker Compose:**
+    Выполните команду в корневом каталоге, где находится `docker-compose.yml`:
+    ```bash
+    docker compose up --build -d
+    ```
+    Эта команда соберёт образы для каждого микросервиса и запустит все контейнеры в фоновом режиме (`-d`).
+
+### Получение Access Token
+
+Для доступа к защищенным эндпоинтам (например, в `account-processor`) необходимо получить Access Token от `auth-server`.
+
+Во время разработки использовался базовый клиент, зарегистрированный в конфигурации [Authorization Server](./auth-server/src/main/java/kg/musabaev/authserver/SecurityConfig.java).
+
+Фронтенд-клиент (мобильное приложение или веб-клиент на Vue/React) отсутствовал, поэтому токен запрашивался вручную через [oidcdebugger.com](https://oidcdebugger.com/) или Postman
+
+Для аутентификации клиента нужно использовать следующие данные:
+
+| Параметр | Значение |
+|-----------|-----------|
+| Client ID | `oauth-client` |
+| Client Secret | `secret` |
+| Scopes | `openid` |
+| Authorization URI | `http://localhost:9000/oauth2/authorize` |
+| Access Token URI | `http://localhost:9000/oauth2/token` |
+| Redirect URI | Задается клиентом |
